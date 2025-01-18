@@ -1,6 +1,6 @@
 import React from 'react';
 import './caseList.css'; 
-import Card from '../components/card/card'; 
+import Card from '../../components/card/card'; 
 import { FaSearch, FaFilter, FaSort } from 'react-icons/fa'; 
 
 const cases = [

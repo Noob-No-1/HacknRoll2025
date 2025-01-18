@@ -1,27 +1,30 @@
-// import RootLayout from '../commons/layouts/RootLayout';
-// import ProtectedRoute from './ProtectedRoutes';
-// import { StudentRoutes } from './StudentRoutes';
-// import { BaseRoutes } from './BaseRoutes';
-// import { EducatorRoutes } from './EducatorRoutes';
-
+import RootLayout from '../commons/layouts/RootLayout';
 import Login from '../pages/Authentication/Login';
+import CaseList from '../pages/User/caseList';  // 引入 CaseList 组件
+import ReminderPage from '../pages/User/reminder';
+import { AdminRoutes } from './AdminRoutes';
+import ProtectedRoutes from './ProtectedRoutes';
 
 export const Root = () => {
   return [
-    {
-      path: '*',
-      element: <Login />,
-    },
+    // {
+    //   path: '*',
+    //   element: <Login />,
+    // },
     {
       path: '/login',
       element: <Login />,
     },
     // {
-    //   path: '/root',
-    //   element: <ProtectedRoute element={<RootLayout />} />,
-    //   children: [],
+    //   path: '/reminder-page',
+    //   element: <ReminderPage />
     // },
+    {
+      path: '/root',
+      element: <ProtectedRoutes element={<RootLayout />} />,
+      children: [...AdminRoutes()],
+    },
   ];
 };
 
-export default Root;
+// export default Root;
