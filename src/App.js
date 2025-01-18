@@ -7,7 +7,7 @@ import Login from './pages/Authentication/Login'
 const App = () => {
   return (
     <div>
-      <CaseList />  {/* 渲染 CaseList 组件 */}
+      <ReminderPage />  {/* 渲染 CaseList 组件 */}
     </div>
   );
 };

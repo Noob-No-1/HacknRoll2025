@@ -60,6 +60,7 @@
   .card-container .ant-card {
     width: 300px;
     margin-bottom: 20px;
+    height: 200px;
   }
   
   /* Sidebar styles */
