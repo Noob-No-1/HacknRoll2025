@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../../firebase-config.js";
+import { auth } from "../../firebase-config.js";
 
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
