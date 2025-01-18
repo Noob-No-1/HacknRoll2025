@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase-config.js";
 
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardContent } from "../../components/ui/card";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -30,30 +32,20 @@ function Login() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
       <Card className="max-w-sm w-full">
-        <CardHeader>Login</CardHeader>
+        <CardHeader className="text-center">Migrant Mutual Aid</CardHeader>
         <CardContent>
           <form onSubmit={handleLogin}>
             {error && <div className="mb-4 text-sm text-red-600">{error}</div>}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                className="w-full rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+            <div className="grid w-full items-center gap-4">
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" placeholder="Enter your email" onChange={(e) => setEmail(e.target.value)}/>
             </div>
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Password
-              </label>
-              <input
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
                 type="password"
-                className="w-full rounded-md border border-gray-300 p-2 focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200"
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -63,8 +55,10 @@ function Login() {
             <Button type="submit" variant="default">
               Login
             </Button>
+            </div>
           </form>
         </CardContent>
+        
       </Card>
     </div>
   );
