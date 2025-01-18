@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase-config.mjs";
+import { auth } from "../../firebase-config.js";
 import { Navigate } from "react-router-dom";
 
 import { Card, CardHeader, CardContent } from "../../components/ui/card";

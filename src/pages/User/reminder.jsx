@@ -72,6 +72,7 @@ const ReminderPage = () => {
             <li><a href="#">Cases</a></li>
             <li><a href="#">Schedule</a></li>
             <li><a href="#">People</a></li>
+            {/* <h1>hi</h1> */}
         </ul>
       </div>
 

@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "../firebase-config.mjs";
+import { storage } from "../firebase-config.js";
 
 export const uploadFile = async (filePath, fileName) => {
   try {
