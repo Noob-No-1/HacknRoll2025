@@ -1,15 +1,14 @@
+// App.js
 import React from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-
-import './App.css';
-import { Root } from './routes/Root';
+import CaseList from './pages/caseList';  // 引入 CaseList 组件
+import ReminderPage from './pages/reminder';
 
 const App = () => {
-  const standardRoutes = Root();
-
-  const router = createBrowserRouter(standardRoutes);
-
-  return <RouterProvider router={router}></RouterProvider>;
+  return (
+    <div>
+      <ReminderPage />  {/* 渲染 CaseList 组件 */}
+    </div>
+  );
 };
 
 export default App;
