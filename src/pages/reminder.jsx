@@ -1,23 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Badge, Calendar, Card, Button, Tooltip, Modal } from 'antd';
-import { PlusOutlined } from '@ant-design/icons'; 
+import { PlusOutlined } from '@ant-design/icons';
+import { collection, getDocs } from "firebase/firestore";
+import { db } from '../firebase-config';
 import './reminder.css'; 
 
-// Example reminder data
-const reminders = [
-  { date: '2025-01-06', title: 'Call Meeting with Health', color: 'green' },
-  { date: '2025-01-14', title: 'Find resume for XYZ', color: 'orange' },
-  { date: '2025-01-19', title: 'Do Task XYZ', color: 'red' },
-  { date: '2025-01-19', title: 'Florence\'s Birthday', color: 'yellow' },
-];
-
-// Function to get list data for a specific date
-const getListData = (value) => {
-  const dateStr = value.format('YYYY-MM-DD');
-  return reminders.filter((reminder) => reminder.date === dateStr);
-};
 
 const ReminderPage = () => {
+  const [reminders, setReminders] = useState([]);
+  const fetchReminders = async () => {
+       await getDocs(collection(db, "reminders"))
+           .then((querySnapshot)=>{            
+               const newData = querySnapshot.docs
+                   .map((rem) => ({...rem.data() }));
+               setReminders(newData);                
+               console.log(reminders, newData);
+           })
+   }
+   useEffect(()=>{
+    try {
+      fetchReminders();
+    } catch (error) {
+       console.error("Error fetching posts: ", error);
+    }
+   }, [])
+
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedReminders, setSelectedReminders] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -27,8 +34,15 @@ const ReminderPage = () => {
     const dateStr = value.format('YYYY-MM-DD');
     setSelectedDate(dateStr); // Save selected date in state
     const remindersForDate = getListData(value); // Get reminders for the selected date
+    console.log("DATE", remindersForDate);
     setSelectedReminders(remindersForDate); // Set reminders in state
     setIsModalVisible(true); // Show the modal
+  };
+
+  // Function to get list data for a specific date
+  const getListData = (value) => {
+    const dateStr = value.format('YYYY-MM-DD');
+    return reminders.filter((reminder) => reminder.date === dateStr);
   };
 
   // Handle Modal close
@@ -43,7 +57,7 @@ const ReminderPage = () => {
       <ul className="events">
         {listData.map((item) => (
           <li key={item.title}>
-            <Badge status={item.color} text={item.title} />
+            <Badge status={item.urgency} text={item.title} />
           </li>
         ))}
       </ul>
@@ -93,7 +107,7 @@ const ReminderPage = () => {
             <ul className="events">
               {selectedReminders.map((item) => (
                 <li key={item.title}>
-                  <Badge status={item.color} text={item.title} />
+                  <Badge status={item.urgency} text={item.title} />
                 </li>
               ))}
             </ul>
@@ -109,7 +123,7 @@ const ReminderPage = () => {
             {reminders.slice(0, 3).map((reminder, index) => (
               <Card key={index} title={`Reminder #${index + 1}`} style={{ width: 300, marginBottom: 20 }}>
                 <p>{reminder.title}</p>
-                <Badge status={reminder.color} text={`Urgency: ${reminder.color}`} />
+                <Badge status={reminder.urgency} text={`Urgency: ${reminder.urgency}`} />
               </Card>
             ))}
           </div>
