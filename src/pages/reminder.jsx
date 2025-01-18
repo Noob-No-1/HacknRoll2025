@@ -57,7 +57,8 @@ const ReminderPage = () => {
       <ul className="events">
         {listData.map((item) => (
           <li key={item.title}>
-            <Badge status={item.urgency} text={item.title} />
+            <Badge status={item.urgency === "High" ? "error" :
+                    item.urgency === "Medium" ? "warning" : "success"} text={item.title} />
           </li>
         ))}
       </ul>
@@ -107,7 +108,8 @@ const ReminderPage = () => {
             <ul className="events">
               {selectedReminders.map((item) => (
                 <li key={item.title}>
-                  <Badge status={item.urgency} text={item.title} />
+                  <Badge status={item.urgency === "High" ? "error" :
+                    item.urgency === "Medium" ? "warning" : "success"} text={item.title} />
                 </li>
               ))}
             </ul>
@@ -123,7 +125,8 @@ const ReminderPage = () => {
             {reminders.slice(0, 3).map((reminder, index) => (
               <Card key={index} title={`Reminder #${index + 1}`} style={{ width: 300, marginBottom: 20 }}>
                 <p>{reminder.title}</p>
-                <Badge status={reminder.urgency} text={`Urgency: ${reminder.urgency}`} />
+                <Badge status={reminder.urgency === "High" ? "error" :
+                    reminder.urgency === "Medium" ? "warning" : "success"} text={`Urgency: ${reminder.urgency}`} />
               </Card>
             ))}
           </div>
