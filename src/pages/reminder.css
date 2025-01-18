@@ -1,0 +1,110 @@
+/* Custom styling for Ant Design Calendar */
+.ant-calendar {
+    width: 100%;
+    max-width: 600px; /* Adjust the width */
+    height: auto;
+    margin: 20px auto; /* Add margin to center the calendar */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .ant-calendar-date {
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .ant-calendar-header {
+    font-size: 18px;
+    text-align: center;
+  }
+  
+  .events li {
+    font-size: 12px;
+    padding: 2px;
+    margin: 4px 0;
+  }
+  
+  /* Reminder Details Section */
+  .reminder-details {
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .reminder-details h2 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .reminder-details p {
+    font-size: 16px;
+    color: #7f8c8d;
+  }
+  
+  /* Latest reminders section */
+  .latest-reminders {
+    margin-top: 40px;
+  }
+  
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+  }
+  
+  .card-container .ant-card {
+    width: 300px;
+    margin-bottom: 20px;
+  }
+  
+  /* Sidebar styles */
+  .sidebar {
+    width: 250px;
+    background-color: #9fa0cd;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #ecf0f1;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+  }
+  
+  .sidebar ul li {
+    margin: 20px 0;
+  }
+  
+  .sidebar ul li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  /* Main content area styles */
+  .main-content {
+    flex: 1;
+    padding: 30px;
+    background-color: #ffffff;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+  }
+  
+  /* Floating Button at the right bottom corner */
+.floating-button {
+position: absolute;
+bottom: 50px; /* Adjust the distance from the bottom */
+right: 50px;
+z-index: 2000;
+}
