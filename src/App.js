@@ -2,11 +2,12 @@
 import React from 'react';
 import CaseList from './pages/caseList';  // 引入 CaseList 组件
 import ReminderPage from './pages/reminder';
+import Login from './pages/Authentication/Login'
 
 const App = () => {
   return (
     <div>
-      <ReminderPage />  {/* 渲染 CaseList 组件 */}
+      <Login />  {/* 渲染 CaseList 组件 */}
     </div>
   );
 };
