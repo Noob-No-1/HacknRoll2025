@@ -173,10 +173,7 @@ const ReminderPage = () => {
             <Link to="/root/cases">Cases</Link>
           </li>
           <li>
-            <Link to="/root/cases/add">Reminder</Link>
-          </li>
-          <li>
-            <Link to="/root">People</Link>
+            <Link to="/root/cases/add">Upload</Link>
           </li>
           <li>
             <Button variant="secondary" onClick={handleLogout}>
