@@ -14,7 +14,7 @@ const CaseList = () => {
   const [cases, setCases] = useState([]); // 用于存储从 Firebase 获取的数据
   const [loading, setLoading] = useState(true); // 加载状态
   const [currentPage, setCurrentPage] = useState(1); // 当前页
-  const casesPerPage = 6; // 每页显示的案例数
+  const casesPerPage = 4; // 每页显示的案例数
 
   // 获取 Firebase 数据
   useEffect(() => {
@@ -77,16 +77,13 @@ const CaseList = () => {
         <h2>MMA Portal</h2>
         <ul>
           <li>
-            <Link to="/root">Home</Link>
+            <Link to="/root">Reminder</Link>
           </li>
           <li>
             <Link to="/root/cases">Cases</Link>
           </li>
           <li>
-            <Link to="/root/cases/add">Reminder</Link>
-          </li>
-          <li>
-            <Link to="/root">People</Link>
+            <Link to="/root/cases/add">Upload Case</Link>
           </li>
           <li>
             <Button variant="secondary" onClick={handleLogout}>
