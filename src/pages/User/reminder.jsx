@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Badge, Calendar, Card, Button, Tooltip, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { db } from "../firebase-config"; // Import Firebase configuration
+import { db } from "../../firebase-config"; // Import Firebase configuration
 import { collection, getDocs } from "firebase/firestore"; // Import Firestore functionality
 import "./reminder.css";
 
