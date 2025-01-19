@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { app, auth, db, storage } from "../firebase-config.js"; // Ensure this is the correct path
+import { app, auth, db, storage } from "../../firebase-config.js"; // Ensure this is the correct path
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

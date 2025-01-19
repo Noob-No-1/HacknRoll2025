@@ -1,6 +1,7 @@
 import ReminderPage from "../pages/User/reminder";
 import { useAuth } from "../contexts/authContext";
 import CaseList from "../pages/User/caseList";
+import UploadPage from "../pages/User/UploadPage";
 
 export const AdminRoutes = () => {
   const authContext = useAuth();
@@ -18,6 +19,10 @@ export const AdminRoutes = () => {
     {
       path: 'cases',
       element: <CaseList />
+    },
+    {
+      path: 'cases/add',
+      element: <UploadPage />
     }
   ];
 }
