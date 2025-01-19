@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Page</title>
+  <script type="module">
+    // Firebase SDK imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-storage.js";
+
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyC2kzje6vAERZTHyr-JCt9pkbNd7D8xbuM",
+      authDomain: "mma-6810b.firebaseapp.com",
+      projectId: "mma-6810b",
+      storageBucket: "mma-6810b.firebasestorage.app",
+      messagingSenderId: "868581469514",
+      appId: "1:868581469514:web:5c44d336ce271bcfc125b3",
+      measurementId: "G-BM3FS8VEPL"
+   };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+
+    // Handle file upload
+    async function handleUpload() {
+      const fileInput = document.getElementById("fileInput");
+      const status = document.getElementById("status");
+
+      // Get the selected file
+      const file = fileInput.files[0];
+      if (!file) {
+        status.textContent = "No file selected!";
+        return;
+      }
+
+      try {
+        status.textContent = "Uploading...";
+        const uniqueName = `${Date.now()}-${file.name}`;
+        const storageRef = ref(storage, `cases/${uniqueName}`);
+
+        // Upload the file to Firebase Storage
+        await uploadBytes(storageRef, file);
+
+        // Get the download URL
+        const downloadURL = await getDownloadURL(storageRef);
+
+        status.textContent = "Upload successful!";
+        console.log("File uploaded successfully. Download URL:", downloadURL);
+
+        // Display the download URL
+        const downloadLink = document.getElementById("downloadLink");
+        downloadLink.href = downloadURL;
+        downloadLink.textContent = "Download File";
+        downloadLink.style.display = "block";
+      } catch (error) {
+        console.error("Error uploading file:", error);
+        status.textContent = "Upload failed!";
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    #downloadLink {
+      display: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Upload File</h1>
+  <input type="file" id="fileInput" />
+  <button onclick="handleUpload()">Upload</button>
+  <p id="status"></p>
+  <a id="downloadLink" target="_blank"></a>
+</body>
+</html>

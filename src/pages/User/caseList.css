@@ -16,7 +16,7 @@ body {
 .container {
   display: flex;
   height: 100vh;
-  overflow: hidden;
+  overflow: auto;
   flex-direction: row;
   width: 100%;
 }
@@ -167,11 +167,21 @@ body {
 .card-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  justify-content: space-between;
-  margin-top: 20px;
+  gap: 20px;  /* 设置卡片之间的间距 */
 }
 
+.card-container .ant-card {
+  flex: 1 1 48%;  /* 使每个card占据50%的宽度 */
+  max-width: 48%;  /* 确保每个card宽度最大为50% */
+  box-sizing: border-box;
+  height: 250px
+}
+
+.pagination-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
 /* Pagination button container */
 .pagination-button-container {
   display: flex;
@@ -179,29 +189,36 @@ body {
   margin-top: 30px;  /* Adjust space from cards */
 }
 
+.pagination-button-container {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 20px; /* 控制距离底部的距离 */
+  left: 50%;
+  transform: translateX(-50%); /* 将容器水平居中 */
+  z-index: 100; /* 确保按钮浮动在页面上方 */
+}
+
 .pagination-button {
   padding: 10px 20px;
-  background-color: #9fa0cd;
+  background-color: #3498db;
   color: white;
   border: none;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
   border-radius: 5px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
   margin: 5px;
 }
 
 .pagination-button:hover {
-  background-color: #9fa0cd;
-  transform: translateY(-2px);
+  background-color: #2980b9;
 }
 
-.pagination-button:active {
-  background-color: #9fa0cd;
-  transform: translateY(0);
+.pagination-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
-
 /* Responsive design for smaller screens */
 @media (max-width: 768px) {
   .container {
