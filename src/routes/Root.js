@@ -7,10 +7,10 @@ import ProtectedRoutes from './ProtectedRoutes';
 
 export const Root = () => {
   return [
-    // {
-    //   path: '*',
-    //   element: <Login />,
-    // },
+    {
+      path: '*',
+      element: <Login />,
+    },
     {
       path: '/login',
       element: <Login />,
