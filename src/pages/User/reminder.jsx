@@ -4,9 +4,12 @@ import { PlusOutlined } from "@ant-design/icons";
 import { db } from "../../firebase-config"; // Import Firebase configuration
 import { collection, getDocs } from "firebase/firestore"; // Import Firestore functionality
 import "./reminder.css";
+import { Link, useNavigate } from "react-router-dom";
+import { doSignOut } from "../../config/auth";
 
 // ReminderPage Component
 const ReminderPage = () => {
+  const navigate = useNavigate();
   const [reminders, setReminders] = useState([]); // State to store reminders from Firebase
   const [selectedDate, setSelectedDate] = useState(null); // State for the selected date
   const [selectedReminders, setSelectedReminders] = useState([]); // State to store reminders for the selected date
@@ -31,7 +34,9 @@ const ReminderPage = () => {
 
       // Filter out reminders that are in the past
       const today = new Date();
-      const futureReminders = reminderList.filter(reminder => reminder.rawDate >= today);
+      const futureReminders = reminderList.filter(
+        (reminder) => reminder.rawDate >= today
+      );
       setReminders(futureReminders); // Store the future reminders in state
     };
 
@@ -98,16 +103,38 @@ const ReminderPage = () => {
     return info.originNode;
   };
 
+  const handleLogout = async () => {
+    try {
+      await doSignOut();
+      navigate("/login");
+    } catch (error) {
+      console.error("Failed to sign out:", error);
+    }
+  };
+
   return (
     <div className="container">
       {/* Sidebar */}
       <div className="sidebar">
         <h2>MMA Portal</h2>
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Cases</a></li>
-          <li><a href="#">Schedule</a></li>
-          <li><a href="#">People</a></li>
+          <li>
+            <Link to="/root">Home</Link>
+          </li>
+          <li>
+            <Link to="/root/cases">Cases</Link>
+          </li>
+          <li>
+            <Link to="/root">Schedule</Link>
+          </li>
+          <li>
+            <Link to="/root">People</Link>
+          </li>
+          <li>
+            <Button variant="secondary" onClick={handleLogout}>
+              Logout
+            </Button>
+          </li>
         </ul>
       </div>
 
@@ -142,7 +169,11 @@ const ReminderPage = () => {
         <div className="latest-reminders">
           <div className="card-container">
             {reminders.slice(0, 2).map((reminder, index) => (
-              <Card key={index} title={`Latest Reminder #${index + 1}`} style={{ width: 300, marginBottom: 20 }}>
+              <Card
+                key={index}
+                title={`Latest Reminder #${index + 1}`}
+                style={{ width: 300, marginBottom: 20 }}
+              >
                 <p>{reminder.title}</p>
                 <p>{reminder.date}</p>
                 {/* Urgency dot as Badge in top-right of card */}
