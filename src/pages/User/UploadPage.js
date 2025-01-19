@@ -3,8 +3,13 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { app, auth, db, storage } from "../../firebase-config.js"; // Ensure this is the correct path
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./reminder.css";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "../../components/ui/button.jsx";
+import { doSignOut } from "../../config/auth.js";
 
 const UploadPage = () => {
+  const navigate = useNavigate();
   const [file, setFile] = useState(null); // For storing the selected file
   const [status, setStatus] = useState(""); // For tracking upload status
 
@@ -60,13 +65,58 @@ const UploadPage = () => {
     }
   };
 
+  
+  const handleLogout = async () => {
+    try {
+      await doSignOut();
+      navigate("/login");
+    } catch (error) {
+      console.error("Failed to sign out:", error);
+    }
+  };
+
   return (
-    <div>
-      <h1>Upload File</h1>
-      <input type="file" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload</button>
-      <p>{status}</p>
-      <ToastContainer />
+    // <div>
+    //   <h1>Upload File</h1>
+    //   <input type="file" onChange={handleFileChange} />
+    //   <button onClick={handleUpload}>Upload</button>
+    //   <p>{status}</p>
+    //   <ToastContainer />
+    // </div>
+    <div className="container">
+      {/* Sidebar */}
+      <div className="sidebar">
+        <h2>MMA Portal</h2>
+        <ul>
+          <li>
+            <Link to="/root">Home</Link>
+          </li>
+          <li>
+            <Link to="/root/cases">Cases</Link>
+          </li>
+          <li>
+            <Link to="/root/cases/add">Reminder</Link>
+          </li>
+          <li>
+            <Link to="/root">People</Link>
+          </li>
+          <li>
+            <Button variant="secondary" onClick={handleLogout}>
+              Logout
+            </Button>
+          </li>
+          {/* <li><a href="#">People</a></li> */}
+        </ul>
+      </div>
+      <div>
+       <h1>Upload File</h1>
+       <input type="file" onChange={handleFileChange} />
+       <button onClick={handleUpload}>Upload</button>
+       <p>{status}</p>
+       <ToastContainer />
+     </div>
+
+     
     </div>
   );
 };
