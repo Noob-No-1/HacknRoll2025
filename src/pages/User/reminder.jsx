@@ -1,11 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Badge, Calendar, Card, Button, Tooltip, Modal, Input, Select, Form } from "antd";
+import {
+  Badge,
+  Calendar,
+  Card,
+  Button,
+  Tooltip,
+  Modal,
+  Input,
+  Select,
+  Form,
+} from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { db } from "../../firebase-config"; // Import Firebase configuration
 import { collection, getDocs, addDoc } from "firebase/firestore"; // Import Firestore functionality
 import "./reminder.css";
+import { Link, useNavigate } from "react-router-dom";
+import { doSignOut } from "../../config/auth";
 
 const ReminderPage = () => {
+  const navigate = useNavigate();
   const [reminders, setReminders] = useState([]); // State to store reminders from Firebase
   const [selectedDate, setSelectedDate] = useState(null); // State for the selected date
   const [selectedReminders, setSelectedReminders] = useState([]); // State to store reminders for the selected date
@@ -24,7 +37,7 @@ const ReminderPage = () => {
         return {
           id: doc.id,
           title: data.title,
-          date: date.toLocaleDateString('en-CA'), // Format date to a readable string (YYYY-MM-DD)
+          date: date.toLocaleDateString("en-CA"), // Format date to a readable string (YYYY-MM-DD)
           color: getUrgencyColor(data.urgency), // Get color based on urgency
           rawDate: date, // Store the raw Date object for comparison
         };
@@ -55,10 +68,12 @@ const ReminderPage = () => {
 
   // Get reminders for a specific date
   const getListData = (value) => {
-    const dateStr = value.format("YYYY-MM-DD");  // Calendar gives us a formatted date string
+    const dateStr = value.format("YYYY-MM-DD"); // Calendar gives us a formatted date string
     return reminders.filter((reminder) => {
-      const reminderDateStr = new Date(reminder.rawDate).toLocaleDateString('en-CA');  // Format the reminder date to 'YYYY-MM-DD'
-      return reminderDateStr === dateStr;  // Compare the date strings
+      const reminderDateStr = new Date(reminder.rawDate).toLocaleDateString(
+        "en-CA"
+      ); // Format the reminder date to 'YYYY-MM-DD'
+      return reminderDateStr === dateStr; // Compare the date strings
     });
   };
 
@@ -99,19 +114,19 @@ const ReminderPage = () => {
   // Define dateCellRender function
   const dateCellRender = (value) => {
     const listData = getListData(value);
-    
+
     if (listData.length > 0) {
       return (
         <ul className="events">
           {listData.map((item) => (
-            <li 
-              key={item.title} 
+            <li
+              key={item.title}
               style={{
-                backgroundColor: item.color,  // 设置背景颜色
-                padding: '5px 10px',
-                borderRadius: '5px',
-                marginBottom: '5px', // 让每个条目之间有间距
-                color: 'white', // 白色文字
+                backgroundColor: item.color, // 设置背景颜色
+                padding: "5px 10px",
+                borderRadius: "5px",
+                marginBottom: "5px", // 让每个条目之间有间距
+                color: "white", // 白色文字
               }}
             >
               {item.title}
@@ -120,7 +135,7 @@ const ReminderPage = () => {
         </ul>
       );
     }
-    return null;  // 没有提醒时不显示任何内容
+    return null; // 没有提醒时不显示任何内容
   };
 
   // Function to render content in month cell (optional)
@@ -135,16 +150,40 @@ const ReminderPage = () => {
     return info.originNode;
   };
 
+  const handleLogout = async () => {
+    try {
+      await doSignOut();
+      navigate("/login");
+    } catch (error) {
+      console.error("Failed to sign out:", error);
+    }
+  };
+
+
   return (
     <div className="container">
       {/* Sidebar */}
       <div className="sidebar">
         <h2>MMA Portal</h2>
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Cases</a></li>
-          <li><a href="#">Schedule</a></li>
-          <li><a href="#">People</a></li>
+          <li>
+            <Link to="/root">Home</Link>
+          </li>
+          <li>
+            <Link to="/root/cases">Cases</Link>
+          </li>
+          <li>
+            <Link to="/root/cases/add">Reminder</Link>
+          </li>
+          <li>
+            <Link to="/root">People</Link>
+          </li>
+          <li>
+            <Button variant="secondary" onClick={handleLogout}>
+              Logout
+            </Button>
+          </li>
+          {/* <li><a href="#">People</a></li> */}
         </ul>
       </div>
 
@@ -186,12 +225,14 @@ const ReminderPage = () => {
             form={form}
             onFinish={handleAddReminder}
             layout="vertical"
-            initialValues={{ urgency: 'Low' }} // Default urgency value
+            initialValues={{ urgency: "Low" }} // Default urgency value
           >
             <Form.Item
               name="title"
               label="Reminder Title"
-              rules={[{ required: true, message: 'Please input reminder title!' }]}
+              rules={[
+                { required: true, message: "Please input reminder title!" },
+              ]}
             >
               <Input />
             </Form.Item>
@@ -199,7 +240,9 @@ const ReminderPage = () => {
             <Form.Item
               name="date"
               label="Date"
-              rules={[{ required: true, message: 'Please input reminder date!' }]}
+              rules={[
+                { required: true, message: "Please input reminder date!" },
+              ]}
             >
               <Input type="date" />
             </Form.Item>
@@ -207,7 +250,7 @@ const ReminderPage = () => {
             <Form.Item
               name="urgency"
               label="Urgency"
-              rules={[{ required: true, message: 'Please select urgency!' }]}
+              rules={[{ required: true, message: "Please select urgency!" }]}
             >
               <Select>
                 <Select.Option value="Low">Low</Select.Option>
@@ -241,6 +284,3 @@ const ReminderPage = () => {
 };
 
 export default ReminderPage;
-
-
-
