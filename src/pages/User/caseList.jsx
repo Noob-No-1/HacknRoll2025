@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../firebase-config"; // 导入firebase配置
+import { db } from "../../firebase-config"; // 导入firebase配置
 import { collection, getDocs } from "firebase/firestore"; // 导入获取数据的功能
 import { Tag, Card as AntCard } from "antd"; // 导入 Ant Design 的 Tag 组件
 import { FaSearch, FaFilter, FaSort } from "react-icons/fa";
