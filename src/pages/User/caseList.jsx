@@ -4,9 +4,13 @@ import { collection, getDocs } from "firebase/firestore"; // 导入获取数据�
 import { Tag, Card as AntCard } from "antd"; // 导入 Ant Design 的 Tag 组件
 import { FaSearch, FaFilter, FaSort } from "react-icons/fa";
 import "./caseList.css";
+import { Link, useNavigate } from "react-router-dom";
+import { doSignOut } from "../../config/auth";
+import { Button } from "../../components/ui/button";
 
 // CaseList 组件
 const CaseList = () => {
+  const navigate = useNavigate();
   const [cases, setCases] = useState([]); // 用于存储从 Firebase 获取的数据
   const [loading, setLoading] = useState(true); // 加载状态
   const [currentPage, setCurrentPage] = useState(1); // 当前页
@@ -17,10 +21,12 @@ const CaseList = () => {
     const fetchCases = async () => {
       const casesCollection = collection(db, "cases"); // "cases" 是你的 Firestore 集合名
       const caseSnapshot = await getDocs(casesCollection);
-      const caseList = caseSnapshot.docs.map(doc => {
+      const caseList = caseSnapshot.docs.map((doc) => {
         const data = doc.data();
         // 将 Firebase 时间戳转换为 Date 对象
-        const createdAt = data.createdAt?.toDate ? data.createdAt.toDate() : new Date();
+        const createdAt = data.createdAt?.toDate
+          ? data.createdAt.toDate()
+          : new Date();
         return {
           id: doc.id,
           title: data.title,
@@ -55,16 +61,38 @@ const CaseList = () => {
     }
   };
 
+  const handleLogout = async () => {
+    try {
+      await doSignOut();
+      navigate("/login");
+    } catch (error) {
+      console.error("Failed to sign out:", error);
+    }
+  };
+
   return (
     <div className="container">
       {/* Sidebar */}
       <div className="sidebar">
         <h2>MMA Portal</h2>
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Cases</a></li>
-          <li><a href="#">Schedule</a></li>
-          <li><a href="#">People</a></li>
+          <li>
+            <Link to="/root">Home</Link>
+          </li>
+          <li>
+            <Link to="/root/cases">Cases</Link>
+          </li>
+          <li>
+            <Link to="/root">Schedule</Link>
+          </li>
+          <li>
+            <Link to="/root">People</Link>
+          </li>
+          <li>
+            <Button variant="secondary" onClick={handleLogout}>
+              Logout
+            </Button>
+          </li>
         </ul>
       </div>
 
@@ -106,8 +134,12 @@ const CaseList = () => {
                 extra={<Tag color="blue">{caseItem.category}</Tag>} // 显示类别为Tag
               >
                 <p>{caseItem.description}</p>
-                <p><strong>Status:</strong> {caseItem.status}</p>
-                <p><strong>Created At:</strong> {caseItem.createdAt}</p>
+                <p>
+                  <strong>Status:</strong> {caseItem.status}
+                </p>
+                <p>
+                  <strong>Created At:</strong> {caseItem.createdAt}
+                </p>
               </AntCard>
             ))
           )}
@@ -115,8 +147,12 @@ const CaseList = () => {
 
         {/* Pagination Buttons */}
         <div className="pagination-button-container">
-          <button className="pagination-button" onClick={prevPage}>Previous</button>
-          <button className="pagination-button" onClick={nextPage}>Next</button>
+          <button className="pagination-button" onClick={prevPage}>
+            Previous
+          </button>
+          <button className="pagination-button" onClick={nextPage}>
+            Next
+          </button>
         </div>
       </div>
     </div>

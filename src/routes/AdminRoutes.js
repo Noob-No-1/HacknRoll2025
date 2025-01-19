@@ -1,5 +1,6 @@
 import ReminderPage from "../pages/User/reminder";
 import { useAuth } from "../contexts/authContext";
+import CaseList from "../pages/User/caseList";
 
 export const AdminRoutes = () => {
   const authContext = useAuth();
@@ -11,7 +12,15 @@ export const AdminRoutes = () => {
   return [
     {
       path: '/root',
-      element: <ReminderPage />
+      element: <ReminderPage />,
+      
     },
+    {
+      path: 'cases',
+      element: <CaseList />
+    }
   ];
 }
+
+
+// {path: 'upload', element: "#"} // paths to be updates
