@@ -12,6 +12,6 @@ export const AdminRoutes = () => {
     {
       path: '/root',
       element: <ReminderPage />
-    }
+    },
   ];
 }
