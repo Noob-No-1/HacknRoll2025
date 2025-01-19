@@ -125,7 +125,7 @@ const ReminderPage = () => {
             <Link to="/root/cases">Cases</Link>
           </li>
           <li>
-            <Link to="/root">Schedule</Link>
+            <Link to="/root/cases/add">Reminder</Link>
           </li>
           <li>
             <Link to="/root">People</Link>
