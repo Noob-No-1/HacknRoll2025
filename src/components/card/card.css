@@ -1,74 +1,114 @@
-.card {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 49%; 
-  transition: box-shadow 0.3s ease;
-  margin-bottom: 20px;
-  position: relative; 
-  box-sizing: border-box;
+Card
+
+/* Custom styling for Ant Design Calendar */
+.ant-calendar {
+  width: 90%; /* Adjusted the width to make it smaller */
+  max-width: 500px; /* Reduced the maximum width */
+  height: auto;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Reduced shadow size */
 }
 
-.card:hover {
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+.ant-calendar-date {
+  height: 60px; /* Reduced the height of each date cell */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Title and content styles */
-.card h3 {
-  font-size: 22px;
-  color: #2c3e50;
-  margin-bottom: 15px;
-  font-weight: 600;
-  padding-right: 25px; 
+.ant-calendar-header {
+  font-size: 16px; /* Reduced the font size */
+  text-align: center;
 }
 
-.card p {
-  font-size: 16px;
+.events li {
+  font-size: 10px; /* Smaller font size for events */
+  padding: 2px;
+  margin: 2px 0; /* Reduced the margin */
+}
+
+/* Reminder Details Section */
+.reminder-details {
+  margin-top: 20px;
+  background-color: #f9f9f9;
+  padding: 15px; /* Reduced padding */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Reduced shadow size */
+}
+
+.reminder-details h2 {
+  font-size: 18px; /* Smaller header font size */
+  color: #333;
+  margin-bottom: 8px; /* Reduced margin */
+}
+
+.reminder-details p {
+  font-size: 14px; /* Smaller paragraph font size */
   color: #7f8c8d;
-  margin-bottom: 10px;
 }
 
-.card small {
-  color: #95a5a6;
+/* Latest reminders section */
+.latest-reminders {
+  margin-top: 30px; /* Reduced margin */
 }
 
-.urgent-dot {
-  position: absolute;
-  top: 10px;  
-  right: 10px;  
-  width: 12px; 
-  height: 12px; 
-  border-radius: 50%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-
-.urgent-dot.high {
-  background-color: #FF6F61;  
-}
-
-.urgent-dot.medium {
-  background-color: #FFB84D;  
-}
-
-.urgent-dot.low {
-  background-color: #81C784; 
-}
-
-/* Card container styles */
 .card-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  justify-content: space-between;
-  margin-top: 20px;
+  gap: 15px; /* Reduced gap between cards */
+  justify-content: flex-start;
 }
 
-/* Responsive design for smaller screens */
-@media (max-width: 768px) {
-  .card {
-    max-width: 100%;  
-  }
+.card-container .ant-card {
+  width: 250px; /* Reduced card width */
+  margin-bottom: 15px; /* Reduced margin between cards */
+  height: 180px; /* Reduced height of cards */
 }
+
+/* Sidebar styles */
+.sidebar {
+  width: 220px; /* Reduced sidebar width */
+  background-color: #9fa0cd;
+  color: white;
+  padding: 15px; /* Reduced padding */
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  font-size: 24px; /* Smaller font size for sidebar heading */
+  margin-bottom: 20px; /* Reduced margin */
+  color: #ecf0f1;
+}
+
+.sidebar ul {
+  list-style-type: none;
+}
+
+.sidebar ul li {
+  margin: 15px 0; /* Reduced margin */
+}
+
+.sidebar ul li a {
+  color: #ecf0f1;
+  text-decoration: none;
+  font-size: 16px; /* Smaller font size */
+}
+
+/* Main content area styles */
+.main-content {
+  flex: 1;
+  padding: 20px; /* Reduced padding */
+  background-color: #ffffff;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); /* Reduced shadow size */
+  overflow-y: auto;
+}
+
+/* Floating Button at the right bottom corner */
+.floating-button {
+  position: absolute;
+  bottom: 30px; /* Adjusted the distance from the bottom */
+  right: 30px; /* Adjusted the distance from the right */
+  z-index: 2000;
+}
+

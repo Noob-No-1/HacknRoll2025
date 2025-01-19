@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Badge, Calendar, Card, Button, Tooltip, Modal } from "antd";
+import { Badge, Calendar, Card, Button, Tooltip, Modal, Input, Select, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { db } from "../../firebase-config"; // Import Firebase configuration
-import { collection, getDocs } from "firebase/firestore"; // Import Firestore functionality
+import { collection, getDocs, addDoc } from "firebase/firestore"; // Import Firestore functionality
 import "./reminder.css";
-import { Link, useNavigate } from "react-router-dom";
-import { doSignOut } from "../../config/auth";
 
-// ReminderPage Component
 const ReminderPage = () => {
-  const navigate = useNavigate();
   const [reminders, setReminders] = useState([]); // State to store reminders from Firebase
   const [selectedDate, setSelectedDate] = useState(null); // State for the selected date
   const [selectedReminders, setSelectedReminders] = useState([]); // State to store reminders for the selected date
   const [isModalVisible, setIsModalVisible] = useState(false); // Control modal visibility
+  const [addReminderVisible, setAddReminderVisible] = useState(false); // Control add reminder modal visibility
+  const [form] = Form.useForm(); // Form instance to handle form submission
 
   // Fetch reminders from Firebase
   useEffect(() => {
@@ -26,7 +24,7 @@ const ReminderPage = () => {
         return {
           id: doc.id,
           title: data.title,
-          date: date.toLocaleDateString(), // Format date to a readable string
+          date: date.toLocaleDateString('en-CA'), // Format date to a readable string (YYYY-MM-DD)
           color: getUrgencyColor(data.urgency), // Get color based on urgency
           rawDate: date, // Store the raw Date object for comparison
         };
@@ -34,9 +32,7 @@ const ReminderPage = () => {
 
       // Filter out reminders that are in the past
       const today = new Date();
-      const futureReminders = reminderList.filter(
-        (reminder) => reminder.rawDate >= today
-      );
+      const futureReminders = reminderList;
       setReminders(futureReminders); // Store the future reminders in state
     };
 
@@ -47,20 +43,23 @@ const ReminderPage = () => {
   const getUrgencyColor = (urgency) => {
     switch (urgency) {
       case "Low":
-        return "green"; // Green for low urgency
+        return "#90EE90"; // 温和的浅绿色
       case "Medium":
-        return "orange"; // Orange for medium urgency
+        return "#FFA07A"; // 温和的浅橙色
       case "High":
-        return "red"; // Red for high urgency
+        return "#FF6F61"; // 柔和的珊瑚红色
       default:
-        return "gray"; // Default color
+        return "gray"; // 默认颜色
     }
   };
 
   // Get reminders for a specific date
   const getListData = (value) => {
-    const dateStr = value.format("YYYY-MM-DD");
-    return reminders.filter((reminder) => reminder.date === dateStr);
+    const dateStr = value.format("YYYY-MM-DD");  // Calendar gives us a formatted date string
+    return reminders.filter((reminder) => {
+      const reminderDateStr = new Date(reminder.rawDate).toLocaleDateString('en-CA');  // Format the reminder date to 'YYYY-MM-DD'
+      return reminderDateStr === dateStr;  // Compare the date strings
+    });
   };
 
   // Handle date selection in the calendar
@@ -77,18 +76,51 @@ const ReminderPage = () => {
     setIsModalVisible(false);
   };
 
-  // Render content in date cell
+  // Handle form submission for adding reminder
+  const handleAddReminder = async (values) => {
+    const { title, date, urgency } = values;
+    const newReminder = {
+      title,
+      date,
+      urgency,
+    };
+    try {
+      // Add the reminder to Firestore
+      const remindersCollection = collection(db, "reminders");
+      await addDoc(remindersCollection, newReminder);
+      // Close the modal and reset the form
+      setAddReminderVisible(false);
+      form.resetFields();
+    } catch (error) {
+      console.error("Error adding reminder: ", error);
+    }
+  };
+
+  // Define dateCellRender function
   const dateCellRender = (value) => {
     const listData = getListData(value);
-    return (
-      <ul className="events">
-        {listData.map((item) => (
-          <li key={item.title}>
-            <Badge status={item.color} text={item.title} />
-          </li>
-        ))}
-      </ul>
-    );
+    
+    if (listData.length > 0) {
+      return (
+        <ul className="events">
+          {listData.map((item) => (
+            <li 
+              key={item.title} 
+              style={{
+                backgroundColor: item.color,  // 设置背景颜色
+                padding: '5px 10px',
+                borderRadius: '5px',
+                marginBottom: '5px', // 让每个条目之间有间距
+                color: 'white', // 白色文字
+              }}
+            >
+              {item.title}
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    return null;  // 没有提醒时不显示任何内容
   };
 
   // Function to render content in month cell (optional)
@@ -103,38 +135,16 @@ const ReminderPage = () => {
     return info.originNode;
   };
 
-  const handleLogout = async () => {
-    try {
-      await doSignOut();
-      navigate("/login");
-    } catch (error) {
-      console.error("Failed to sign out:", error);
-    }
-  };
-
   return (
     <div className="container">
       {/* Sidebar */}
       <div className="sidebar">
         <h2>MMA Portal</h2>
         <ul>
-          <li>
-            <Link to="/root">Home</Link>
-          </li>
-          <li>
-            <Link to="/root/cases">Cases</Link>
-          </li>
-          <li>
-            <Link to="/root/cases/add">Reminder</Link>
-          </li>
-          <li>
-            <Link to="/root">People</Link>
-          </li>
-          <li>
-            <Button variant="secondary" onClick={handleLogout}>
-              Logout
-            </Button>
-          </li>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Cases</a></li>
+          <li><a href="#">Schedule</a></li>
+          <li><a href="#">People</a></li>
         </ul>
       </div>
 
@@ -161,37 +171,58 @@ const ReminderPage = () => {
               ))}
             </ul>
           ) : (
-            <p>No reminders for this day.</p>
+            <p></p>
           )}
         </Modal>
 
-        {/* Display Latest Reminders as Cards */}
-        <div className="latest-reminders">
-          <div className="card-container">
-            {reminders.slice(0, 2).map((reminder, index) => (
-              <Card
-                key={index}
-                title={`Latest Reminder #${index + 1}`}
-                style={{ width: 300, marginBottom: 20 }}
-              >
-                <p>{reminder.title}</p>
-                <p>{reminder.date}</p>
-                {/* Urgency dot as Badge in top-right of card */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "10px",
-                    right: "10px",
-                    backgroundColor: reminder.color,
-                    borderRadius: "50%",
-                    width: "12px",
-                    height: "12px",
-                  }}
-                ></div>
-              </Card>
-            ))}
-          </div>
-        </div>
+        {/* Add Reminder Modal */}
+        <Modal
+          title="Add Reminder"
+          visible={addReminderVisible}
+          onCancel={() => setAddReminderVisible(false)}
+          footer={null}
+        >
+          <Form
+            form={form}
+            onFinish={handleAddReminder}
+            layout="vertical"
+            initialValues={{ urgency: 'Low' }} // Default urgency value
+          >
+            <Form.Item
+              name="title"
+              label="Reminder Title"
+              rules={[{ required: true, message: 'Please input reminder title!' }]}
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item
+              name="date"
+              label="Date"
+              rules={[{ required: true, message: 'Please input reminder date!' }]}
+            >
+              <Input type="date" />
+            </Form.Item>
+
+            <Form.Item
+              name="urgency"
+              label="Urgency"
+              rules={[{ required: true, message: 'Please select urgency!' }]}
+            >
+              <Select>
+                <Select.Option value="Low">Low</Select.Option>
+                <Select.Option value="Medium">Medium</Select.Option>
+                <Select.Option value="High">High</Select.Option>
+              </Select>
+            </Form.Item>
+
+            <Form.Item>
+              <Button type="primary" htmlType="submit" block>
+                Add Reminder
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
       </div>
 
       {/* Floating button at the bottom-right corner */}
@@ -201,7 +232,7 @@ const ReminderPage = () => {
             shape="circle"
             icon={<PlusOutlined />}
             size="large"
-            onClick={() => console.log("Add reminder clicked")}
+            onClick={() => setAddReminderVisible(true)} // Show add reminder modal
           />
         </Tooltip>
       </div>
@@ -210,3 +241,6 @@ const ReminderPage = () => {
 };
 
 export default ReminderPage;
+
+
+
