@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This project is a case management system designed for social worker organizations, aimed at helping social workers efficiently track and manage the cases they are responsible for, such as legal cases, medical cases, financial assistance, etc. The system provides an intuitive interface with features like case management, reminder setup, case categorization, search, and filter.
+MMA is a case management system designed for migrant worker organizations, aimed at helping migrant workers efficiently track and manage the cases they are responsible for, such as legal cases, medical cases, financial assistance, etc. The system provides an intuitive interface with features like case management, reminder setup, case categorization, search, and filter.
 
 ## Features
 
